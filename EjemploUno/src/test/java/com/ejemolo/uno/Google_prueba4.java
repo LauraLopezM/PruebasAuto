@@ -36,7 +36,7 @@ public class Google_prueba4 {
 
 	@Test
 	public void test() throws AWTException {
-		//ejercicio 4 hoja 1
+		//ejercicio 4 hoja 1 realizar una busqueda, cambiar de pagina y hacer otra busqueda
 			WebElement searchbox = driver.findElement(By.name("q"));
 			searchbox.clear();
 			searchbox.sendKeys("azul");
@@ -45,21 +45,27 @@ public class Google_prueba4 {
 			System.out.print(driver.getTitle());
 			driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
 			
+			String originalWindow =driver.getWindowHandle();
+			assert driver.getWindowHandles().size()==1;
+			((JavascriptExecutor) driver).executeScript("window.open('https://google.com') ");
+			driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+			
+			for	(String windowHandle : driver.getWindowHandles()) {
+				if(!originalWindow.contentEquals(windowHandle)) {
+					driver.switchTo().window(windowHandle);
+					break;
+				}
+			}
+			WebElement box = driver.findElement(By.name("q"));
+			box.clear();
+			box.sendKeys("verde");
+			box.submit();
+			System.out.print(driver.getTitle());
+			
+			
 			
 			
 	}
-	@Test
-	public void test2() throws AWTException {
-		((JavascriptExecutor) driver).executeScript("window.open('https://google.com') ");	
-		
-		
-		WebElement search = driver.findElement(By.name("q"));
-		search.clear();      
-		search.sendKeys("verde");
-		search.submit();
-		
-			
-		//System.out.print(driver.getTitle());
-	}
+
 
 }
